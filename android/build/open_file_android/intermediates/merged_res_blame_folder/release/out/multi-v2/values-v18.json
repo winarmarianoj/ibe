@@ -1,0 +1,34 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.crazecoder.openfile.open_file_android-merged_res-30:/values-v18/values-v18.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\Mariano\\.gradle\\caches\\transforms-3\\ad367aeffd2f16c7a58df77f2d4e86d1\\transformed\\appcompat-1.6.1\\res\\values-v18\\values-v18.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "48",
+                        "endOffsets": "99"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "com.crazecoder.openfile.open_file_android-mergeReleaseResources-28:/values-v18/values-v18.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\Mariano\\.gradle\\caches\\transforms-3\\ad367aeffd2f16c7a58df77f2d4e86d1\\transformed\\appcompat-1.6.1\\res\\values-v18\\values-v18.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "48",
+                        "endOffsets": "99"
+                    }
+                }
+            ]
+        }
+    ]
+}
