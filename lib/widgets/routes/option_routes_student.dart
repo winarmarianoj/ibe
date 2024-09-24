@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 class OptionRoutesApplicant extends StatelessWidget {
   const OptionRoutesApplicant({super.key});
 
-
   @override
   Widget build(BuildContext context) {
 

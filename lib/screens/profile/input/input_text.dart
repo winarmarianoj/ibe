@@ -5,9 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ibe_assistance/constant/color_constant.dart';
 import 'package:ibe_assistance/constant/text_constant.dart';
 import 'package:ibe_assistance/cubit/user_cubit.dart';
-import 'package:ibe_assistance/screens/profile/profile_person.dart';
 import 'package:ibe_assistance/widgets/button/bounce_button.dart';
 import 'package:ibe_assistance/widgets/drawers/draw_drawer.dart';
+import 'package:ibe_assistance/widgets/drawers/profile_drawer.dart';
 import 'package:ibe_assistance/widgets/message/custom_popup.dart';
 
 class InputText extends StatelessWidget {
@@ -52,7 +52,7 @@ class InputText extends StatelessWidget {
                           contentBasedWidth: true,
                           onPressed:() {
                             changeNewAttribute(attribute, data, context);
-                            Navigator.push(context, MaterialPageRoute(builder: ((context) => ProfilePerson())));
+                            Navigator.push(context, MaterialPageRoute(builder: ((context) => const ProfileDrawer())));
                           },
                         ),               
                       ],
@@ -78,7 +78,7 @@ class InputText extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ProfilePerson(),
+                builder: (context) => const ProfileDrawer(),
               ),
             );
           },

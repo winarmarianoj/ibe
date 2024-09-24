@@ -23,7 +23,7 @@ class ProfileService {
         phone: "", email: "", dni: "", role: "", grade: "");
     person = Person.fromJson(personMap);
 
-    log("ESTOY EN LOGIN, Y LA PERSONA SELECCIONADA ES");
+    log("ESTOY EN PROFILE PERSON EN GET PERSON, Y LA PERSONA SELECCIONADA ES");
     log("${person.name}/${person.lastName}/${person.dni}/${person.phone!}/${person.email}/${person.grade}/${person.role}");
     return person;
   }

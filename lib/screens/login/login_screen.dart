@@ -7,9 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:ibe_assistance/constant/color_constant.dart';
 import 'package:ibe_assistance/constant/text_constant.dart';
 import 'package:ibe_assistance/cubit/user_cubit.dart';
-import 'package:ibe_assistance/models/person_user.dart';
-import 'package:ibe_assistance/providers/login_form_provider.dart';
-import 'package:ibe_assistance/providers/person_user_provider.dart';
+import 'package:ibe_assistance/providers/user_provider.dart';
 import 'package:ibe_assistance/screens/admin/admin_screen.dart';
 import 'package:ibe_assistance/screens/register/register_screen.dart';
 import 'package:ibe_assistance/screens/student/student_screen.dart';
@@ -23,8 +21,6 @@ import 'package:ibe_assistance/widgets/ui/card_container.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
-
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -43,9 +39,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     const SizedBox(height: 10),
                     Text(textTitle, style: Theme.of(context).textTheme.headlineMedium,),
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 30),                    
                     ChangeNotifierProvider(
-                      create: (_) { LoginFormProvider(); PersonUserProvider();},
+                      create: (_) => UserFormProvider(),
                       child: _LoginForm(),
                     )
                   ],
@@ -82,18 +78,17 @@ class _LoginFormState extends State<_LoginForm> {
   bool passVisible = true;
   @override
   Widget build(BuildContext context) {
-    var loginForm = Provider.of<LoginFormProvider>(context);
-    var personUserProvider = Provider.of<PersonUserProvider>(context);
+    var userForm = Provider.of<UserFormProvider>(context);
     AuthService service = AuthService();
 
     return Form(
-      key: loginForm.formKey,
+      key: userForm.formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Column(
         children: [
-          EmailLoginWidget(loginForm: loginForm),
+          EmailLoginWidget(userFormProvider: userForm),
           const SizedBox(height: 30),            
-          DniLoginWidget(loginForm: loginForm),
+          DniLoginWidget(userFormProvider: userForm,),
           const SizedBox(height: 30),            
           MaterialButton(
             shape: RoundedRectangleBorder(
@@ -101,17 +96,18 @@ class _LoginFormState extends State<_LoginForm> {
             disabledColor: themeLoginDisableButton,
             elevation: 0,
             color: themeLoginSendButton,              
-            onPressed: loginForm.isLoading && loginForm.email.isNotEmpty && loginForm.dni.isNotEmpty
+            onPressed: userForm.isLoading && userForm.email.isNotEmpty && userForm.dni.isNotEmpty
                 ? null
                 : () async {
                     FocusScope.of(context).unfocus();
-                    if (!loginForm.isValidForm()) return;              
-                    final PersonUser personUser = await service.login(loginForm);
-                    if(personUser.name.length>2){
-                      personUserProvider.personUser = personUser;
-                      context.read<UserCubit>().createUser(personUser);      
+                    if (!userForm.isValidForm()) return;                                  
+                    userForm = await service.login(userForm);
+                    if(userForm.isLoading){ 
+                      context.read<UserCubit>().createUser(userForm.personUser);
+                      print("Valido isloading  ${userForm.isLoading} ");
+                      print("${userForm.personUser.name}/${userForm.personUser.lastName}/${userForm.personUser.dni}/${userForm.personUser.phone}/${userForm.personUser.email}/${userForm.personUser.grade}/${userForm.personUser.role}/${userForm.personUser.token}");
                       //Navigator.push(context, MaterialPageRoute(builder: ((context) => HeadersPage(role: personUser.role,))));
-                      personUser.role == 'STUDENT' ? 
+                      userForm.personUser.role == 'STUDENT' ? 
                           Navigator.push(context,  CupertinoPageRoute(builder: ((context) => StudentScreen())))
                           : Navigator.push(context,  MaterialPageRoute(builder: ((context) => AdminScreen())));
                     }else {
@@ -139,7 +135,7 @@ class _LoginFormState extends State<_LoginForm> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
               child: Text(
-                loginForm.isLoading ? 'Ingresando': 'Ingresar' ,                     
+                userForm.isLoading ? 'Ingresando': 'Ingresar' ,                     
                 style: const TextStyle(color: themeLoginStateProccess, fontSize: 12.00),
             ))                     
           ),

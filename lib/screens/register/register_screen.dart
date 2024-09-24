@@ -7,8 +7,8 @@ import 'package:ibe_assistance/constant/text_constant.dart';
 import 'package:ibe_assistance/cubit/user_cubit.dart';
 import 'package:ibe_assistance/models/person.dart';
 import 'package:ibe_assistance/models/person_user.dart';
-import 'package:ibe_assistance/providers/person_user_provider.dart';
 import 'package:ibe_assistance/providers/register_form_provider.dart';
+import 'package:ibe_assistance/providers/user_provider.dart';
 import 'package:ibe_assistance/screens/admin/admin_screen.dart';
 import 'package:ibe_assistance/screens/login/login_screen.dart';
 import 'package:ibe_assistance/screens/student/student_screen.dart';
@@ -49,10 +49,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   children: [
                     const SizedBox(height: 10),
                     Text(textTitleRegister, style: Theme.of(context).textTheme.headlineMedium,),
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 30),                    
                     ChangeNotifierProvider(
-                      create: (_) {RegisterFormProvider(); PersonUserProvider();},
-                      child: const RegisterForm(),
+                      create: (_) => RegisterFormProvider(),
+                      child: _RegisterForm(),
                     )
                   ],
                 ),
@@ -79,7 +79,7 @@ AppBar EmptyAppBar(BuildContext context){
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const LoginScreen(),
+            builder: (context) => LoginScreen(),
           ),
         );
       },
@@ -88,20 +88,18 @@ AppBar EmptyAppBar(BuildContext context){
   );
 }  
 
-class RegisterForm extends StatefulWidget {
-  const RegisterForm({super.key});
-  
+class _RegisterForm extends StatefulWidget {
   @override
-  State<RegisterForm> createState() => _RegisterFormState();
+  State<_RegisterForm> createState() => _RegisterFormState();
 }
 
-class _RegisterFormState extends State<RegisterForm> {
+class _RegisterFormState extends State<_RegisterForm> {
   bool passVisible = true;
 
   @override
   Widget build(BuildContext context) {    
     var registerForm = Provider.of<RegisterFormProvider>(context); 
-    var personUserProvider = Provider.of<PersonUserProvider>(context);     
+    var userFormProvider = Provider.of<UserFormProvider>(context); 
     AuthService authService = AuthService();
     ProfileService profileService = ProfileService();
 
@@ -148,7 +146,8 @@ class _RegisterFormState extends State<RegisterForm> {
                       final String resultRegisterPerson = await profileService.createPerson(person, personUser.token);
     
                       if(resultRegisterPerson == "OK"){                          
-                        personUserProvider.personUser = personUser;
+                        userFormProvider.personUser = personUser;
+                        userFormProvider.isLoading = true;
                         context.read<UserCubit>().createUser(personUser);      
                         //Navigator.push(context, MaterialPageRoute(builder: ((context) => HeadersPage(role: person.role,))));
                         personUser.role == 'STUDENT' ? 

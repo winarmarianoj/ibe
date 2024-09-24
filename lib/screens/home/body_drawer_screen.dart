@@ -5,6 +5,7 @@ import 'package:ibe_assistance/constant/text_constant.dart';
 import 'package:ibe_assistance/cubit/user_cubit.dart';
 import 'package:ibe_assistance/models/person_user.dart';
 import 'package:ibe_assistance/providers/theme_change_provider.dart';
+import 'package:ibe_assistance/screens/login/login_screen.dart';
 import 'package:ibe_assistance/widgets/routes/option_routes_admin.dart';
 import 'package:ibe_assistance/widgets/routes/option_routes_student.dart';
 import 'package:ibe_assistance/widgets/text/myText.dart';
@@ -74,7 +75,7 @@ class BodyDrawerScreen extends StatelessWidget{
             const SizedBox(height: 7),
 
             if(personUser.role == "STUDENT") const OptionRoutesApplicant(),
-            if(personUser.role == "ADMIN") const OptionRoutesAdmin(),                        
+            if(personUser.role == "ADMIN") const OptionRoutesAdmin(),            
             const SizedBox(height: 3),
 
             ListTile(
@@ -92,7 +93,13 @@ class BodyDrawerScreen extends StatelessWidget{
               title: const Text(textLogout),
               onTap: () {                
                 context.read<UserCubit>().logout();
-                Future.delayed(const Duration(seconds: 3));                                  
+                //Future.delayed(const Duration(seconds: 3));
+                 Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginScreen(),
+                  ),
+                );
               }
             ),
           ],

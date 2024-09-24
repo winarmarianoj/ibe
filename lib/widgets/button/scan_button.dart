@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:ibe_assistance/providers/person_user_provider.dart';
+import 'package:ibe_assistance/providers/user_provider.dart';
 import 'package:ibe_assistance/screens/student/student_screen.dart';
 import 'package:ibe_assistance/service/assistance_service.dart';
 import 'package:ibe_assistance/widgets/button/bounce_button.dart';
@@ -15,7 +15,7 @@ class ScanButton extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    var personUserProvider = Provider.of<PersonUserProvider>(context);    
+    var userForm = Provider.of<UserFormProvider>(context);    
     AssistanceService assistanceService = AssistanceService();
     
     return FloatingActionButton(
@@ -34,7 +34,7 @@ class ScanButton extends StatelessWidget {
           barcodeScanRes = 'ERROR: Fail to get platform version.';
         }
         print(barcodeScanRes);        
-        String responseAssistance = await assistanceService.createAssistance(barcodeScanRes, personUserProvider.personUser);
+        String responseAssistance = await assistanceService.createAssistance(barcodeScanRes, userForm.personUser);
         if(responseAssistance == "OK"){
           showDialog(
             context: context, 

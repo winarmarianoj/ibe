@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:ibe_assistance/constant/color_constant.dart';
 import 'package:ibe_assistance/constant/text_constant.dart';
-import 'package:ibe_assistance/providers/person_user_provider.dart';
+import 'package:ibe_assistance/providers/user_provider.dart';
 import 'package:ibe_assistance/widgets/text/myText.dart';
 import 'package:provider/provider.dart';
 
@@ -16,8 +16,8 @@ class BodyStudentScreen extends StatefulWidget{
 class _BodyStudentScreenState extends State<BodyStudentScreen> {
   @override
   Widget build(BuildContext context) {
-    var personUserProvider = Provider.of<PersonUserProvider>(context);
-    personUserProvider.personUser.setIsStudentHome = true;
+    var userForm = Provider.of<UserFormProvider>(context);
+    userForm.personUser.setIsStudentHome = true;
         
     return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,

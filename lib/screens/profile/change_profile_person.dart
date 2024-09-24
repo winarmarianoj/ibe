@@ -6,8 +6,8 @@ import 'package:ibe_assistance/constant/color_constant.dart';
 import 'package:ibe_assistance/constant/text_constant.dart';
 import 'package:ibe_assistance/cubit/user_cubit.dart';
 import 'package:ibe_assistance/screens/profile/input/input_text.dart';
-import 'package:ibe_assistance/screens/profile/profile_person.dart';
 import 'package:ibe_assistance/widgets/button/bounce_button.dart';
+import 'package:ibe_assistance/widgets/drawers/profile_drawer.dart';
 import 'package:ibe_assistance/widgets/text/myText.dart';
 
 class ChangeProfilePerson extends StatelessWidget {
@@ -120,7 +120,7 @@ class ChangeProfilePerson extends StatelessWidget {
                     actions: [
                       TextButton(onPressed:() {context.read<UserCubit>().deleteUser(context);}, child: const MyText(text: "SI",)),
                       TextButton(onPressed:() 
-                      {Navigator.push(context, MaterialPageRoute(builder: ((context) => ProfilePerson())));},
+                      {Navigator.push(context, MaterialPageRoute(builder: ((context) => const ProfileDrawer())));},
                       child: const MyText(text: "NO",)),
                     ],
                   ),

@@ -5,7 +5,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:ibe_assistance/models/person.dart';
 import 'package:ibe_assistance/models/person_user.dart';
-import 'package:ibe_assistance/providers/login_form_provider.dart';
+import 'package:ibe_assistance/providers/user_provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:ibe_assistance/screens/login/login_screen.dart';
 import 'package:ibe_assistance/service/profile_service.dart';
@@ -41,11 +41,11 @@ class AuthService {
     }
   }
 
-  Future<PersonUser> login(LoginFormProvider loginForm) async{
+  Future<UserFormProvider> login(UserFormProvider userFormProvider) async{
     
     final Map<String, dynamic> authData = {
-      'email': loginForm.email,
-      'password': loginForm.dni,
+      'email': userFormProvider.email,
+      'password': userFormProvider.dni,
       'returnSecureToken': true
     };
 
@@ -58,12 +58,19 @@ class AuthService {
 
     if ( decodedResp.containsKey('idToken') ) {
         String token = decodedResp['idToken'];
-        Person person = await profileService.getPerson(loginForm.dni, token);
-        return PersonUser.mapToPerson(person, token);
+        Person person = await profileService.getPerson(userFormProvider.dni, token);
+        PersonUser personUser = PersonUser.mapToPerson(person, token);
+        log("ESTOY EN LOGIN, Y LA PERSONA SELECCIONADA ES");
+        log("${personUser.name}/${personUser.lastName}/${personUser.dni}/${personUser.phone!}/${personUser.email}/${personUser.grade}/${personUser.role}/${personUser.token}");
+    
+        userFormProvider.personUser = personUser;
+        userFormProvider.isLoading = true;
+        return userFormProvider;
     } else {
       log(decodedResp['error']['message']);
-      return  PersonUser(name: "", lastName: "", phone: "", 
+      userFormProvider.personUser = PersonUser(name: "", lastName: "", phone: "", 
                email: "", dni: "", role: "", grade: "", token: "");
+      return userFormProvider;
     }
   }
 
